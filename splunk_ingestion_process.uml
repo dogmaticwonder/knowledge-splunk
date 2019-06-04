@@ -1,0 +1,70 @@
+@startuml
+
+:[[https://docs.splunk.com/Documentation/Splunk/7.2.6/Data/Configurecharactersetencoding Set Character Encoding]]; 
+
+if (Is the incoming data UTF-8 encoded?) then (yes)
+    :UTF-8 is the default encoding for Splunk;
+    note left
+        CHARSET=AUTO in props.conf
+    end note
+    :No configuration change needed;
+else (no)
+    :You'll need to set CHARSET to a supported character set;
+    :[[https://docs.splunk.com/Documentation/Splunk/7.2.6/data/Configurecharactersetencoding#Comprehensive_list_of_supported_character_sets Splunk supported character sets (e.g. ISO-8859-8)]];
+endif
+
+:[[https://docs.splunk.com/Documentation/Splunk/7.2.6/Data/Configureeventlinebreaking Configure event line breaking]];
+note right 
+    Need a better description of what line, event, and segement mean
+end note
+
+if (Do you have multiple events existing on\n one line in the raw data stream?) then (Yes)
+
+    :Then set "SHOULD_LINEMERGE = true";
+    note right
+    [[https://www.google.com/search?q=java+stack+trace+examples&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjFmNONt87iAhVG5awKHcnyAPsQ_AUIECgB&biw=1440&bih=766#imgrc=_ Example multi-line logs]]
+    end note
+
+else (No)
+    :Then set "SHOULD_LINEMERGE = false";
+    :Use LINE_BREAKER = <regular expression> in props.conf;
+    :By default, events will be created based on line breaks;
+endif
+
+:[[https://docs.splunk.com/Documentation/Splunk/7.2.6/Data/Handleeventtimestamps Configure Timestamps]];
+
+:Need details on how Splunk automatically identifes timestamps; does the TIME_FIELD matter?;
+
+if (Does your event have a timestamp field?) then (yes)
+
+    if(Has the timestamp been automatically recognized?) then (yes)
+        :yes;
+    else (no)
+        :Configure TIME_FIELD to match the time field;
+        ::Event has multiple timestamps; 
+	    
+	    :[[https://docs.splunk.com/Documentation/Splunk/7.2.6/SearchReference/DateandTimeFunctions#strptime.28X.2CY.29 Set TIME_FIELD to recognize the desired timestamp using strptime variables]];
+	
+	    :Use TIME_PREFIX and MAX_TIMESTAMP_LOOKAHEAD to capture appropriate timestamp; 
+        
+        note left	
+        	When TIME_PREFIX is set, Splunk software scans the event text for a match 
+        	to its regular expression before it tries to extract a timestamp. 
+        end note
+	endif
+	
+	if(Is the YEAR field within the event's timestamp correct?) then (Yes)
+	else (No)
+	    :[[https://docs.splunk.com/Documentation/Splunk/7.2.6/Data/HowSplunkextractstimestamps#How_Splunk_software_determines_timestamps_with_no_year Review splunk doc for year identification]];
+	    :This also includes timestamps that don't explicitly state the year;
+	endif
+    
+    
+else (no)
+	:[[https://docs.splunk.com/Documentation/Splunk/7.2.6/Data/Configuretimestamprecognition Splunk logic for assigning timestamps to events with an explicit timestamp]];
+endif
+
+:[[https://docs.splunk.com/Documentation/Splunk/7.2.6/Data/Aboutindexedfieldextraction Create index-time extractions]];
+
+@enduml
+
