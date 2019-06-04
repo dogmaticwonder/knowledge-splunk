@@ -66,5 +66,12 @@ endif
 
 :[[https://docs.splunk.com/Documentation/Splunk/7.2.6/Data/Aboutindexedfieldextraction Create index-time extractions]];
 
+if(Do you have a need to extract fields during index time?) then (yes)
+	:[[https://docs.splunk.com/Documentation/Splunk/7.2.6/Data/Configureindex-timefieldextraction Learn about index time extractions]];
+else (No)
+	:Great!;
+	:[[https://docs.splunk.com/Documentation/Splunk/7.2.6/Indexer/Indextimeversussearchtime  Stick with search-time extractions]];
+endif
+
 @enduml
 
