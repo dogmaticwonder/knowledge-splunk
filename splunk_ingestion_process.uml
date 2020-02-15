@@ -23,6 +23,7 @@ if (Do you have multiple events existing on\n one line in the raw data stream?) 
     :Then set "SHOULD_LINEMERGE = true";
     note right
     [[https://www.google.com/search?q=java+stack+trace+examples&source=lnms&tbm=isch&sa=X&ved=0ahUKEwjFmNONt87iAhVG5awKHcnyAPsQ_AUIECgB&biw=1440&bih=766#imgrc=_ Example multi-line logs]]
+    [[https://docs.splunk.com/Documentation/Splunk/latest/Admin/Propsconf#props.conf.example Props.Conf Example]]
     end note
 
 else (No)
